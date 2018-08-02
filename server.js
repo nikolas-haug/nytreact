@@ -1,4 +1,6 @@
 const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -8,14 +10,29 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
-app.get("/api/sharks", function(req, res) {
-  console.log('hit /api/sharks');
-  res.json([
-    {type: "mako", speed: 45, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Isurus_oxyrinchus_by_mark_conlin2.JPG/1024px-Isurus_oxyrinchus_by_mark_conlin2.JPG"}, 
-    {type: "great white", speed: 35, image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/White_shark.jpg/1024px-White_shark.jpg"}
-  ]);
-  res.end();
-})
+// Define middleware here
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// Serve up static assets (usually on heroku)
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
+
+// Connect to the Mongo DB
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/nytreact");
+
+var db = mongoose.connection;
+
+db.on("error", function(err) {
+  console.log("Mongoose Error: ", err);
+});
+
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
+});
+
+// require ROUTES here
+require("./routes/news")(app);
 
 // Send every request to the React app
 // Define any API routes before this runs
