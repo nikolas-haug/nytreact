@@ -32,6 +32,12 @@ class Main extends Component {
   handleSubmit = (event) => {
       event.preventDefault();
       this.setQuery(this.state.search, this.state.start, this.state.end);
+
+      this.setState({
+        search: "",
+        start: "",
+        end: ""
+      });
   }
 
   // This function will be passed down into child components so they can change the "parent"
@@ -40,7 +46,13 @@ class Main extends Component {
   setQuery = (newQuery, newStart, newEnd) => {
     API.runQuery(newQuery, newStart, newEnd)
     .then((data) => {
-      this.setState({ results: { docs: data.docs } });
+      this.setState({ results: data.docs});
+    });
+  }
+
+  renderArticles = () => {
+    return this.state.results.docs.map((article, index) => {
+      <h1>{article.headline.main}</h1>
     });
   }
 
@@ -56,9 +68,16 @@ class Main extends Component {
           end={this.state.end}
           handleSubmit={this.handleSubmit}
           handleChange={this.handleChange}
-        />
+        /> 
+          
+          <Results 
+            results={this.state.results}  
+          />
+         
         {/* Note how we pass in the results into this component */}
-        <Results results={this.state.results} />
+        {/* <Results results={this.state.results.map((article, index) =>
+
+        )} /> */}
       </div>
     );
   }
