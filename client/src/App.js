@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import "./App.css";
 
 import Title from "./components/Title";
-import Search from "./components/Search";
-import Results from "./components/Results";
+// import Search from "./components/Search";
+// import Results from "./components/Results";
+
+import Main from "./components/Main/Main";
 
 class App extends Component {
+
   render() {
     return (
       <Router>
@@ -16,8 +19,9 @@ class App extends Component {
               <Title 
                 title="Title!"
               />
-              <Search />
-              <Results />
+              <Main />
+              {/* <Search />
+              <Results /> */}
               </div>
           } />
 

@@ -5,7 +5,7 @@ import axios from "axios";
 const APIKey = "169fab141c324b17a7119dc49caf6b92";
 
 // API helper functions
-const helpers = {
+const API = {
 
   //function for the nyt news query
   runQuery: function(keyword, startDate, endDate) {
@@ -69,4 +69,4 @@ const helpers = {
   
 }
 
-
+export default API;

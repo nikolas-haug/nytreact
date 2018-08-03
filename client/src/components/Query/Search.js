@@ -1,49 +1,71 @@
-import React from "react";
-import "./Search.css";
+import React, { Component } from "react";
 
-const Search = (props) => (
+class Search extends Component {
+
+    state = {
+        search: "",
+        start: "",
+        end: ""
+    }
+
+    // function to detect any change 
+    handleChange = (event) => {
+        // Here we create syntax to capture any change in text to the query terms (pre-search).
+        let newState = {};
+        newState[event.target.id] = event.target.value;
+        this.setState(newState);
+    }
+
+    // This code handles the sending of the search terms to the parent Search component
+    handleSubmit = (event) => {
+        event.preventDefault();
+        this.props.updateSearch(this.state.search, this.state.start, this.state.end);
+    }
+
+    render() {
+        return (
             <div className="card">
                 <div className="card-header">
                 Search Parameters
                 </div>
                 <div className="card-body">
-                <form onSubmit={props.handleSubmit}>
+                <form>
                     <div className="form-group">
-                        <label htmlFor="search">Seach Term</label>
+                        <label for="search">Seach Term</label>
                         {/* <input type="text" className="form-control" id="search" placeholder="search" /> */}
                         <input
                             type="text"
-                            value={props.search}
+                            value={this.state.search}
                             className="form-control"
                             id="search"
                             placeholder="search"
-                            onChange={props.handleChange}
+                            onChange={this.handleChange}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="start">Start Date</label>
+                        <label for="start">Start Date</label>
                         {/* <input type="text" className="form-control" id="start" placeholder="start" /> */}
                         <input
                             type="number"
-                            value={props.start}
+                            value={this.state.start}
                             className="form-control"
                             id="start"
                             placeholder="start date"
-                            onChange={props.handleChange}
+                            onChange={this.handleChange}
                             required
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="end">End Date</label>
+                        <label for="end">End Date</label>
                         {/* <input type="text" className="form-control" id="end" placeholder="search" /> */}
                         <input
                             type="number"
-                            value={props.end}
+                            value={this.state.end}
                             className="form-control"
                             id="end"
                             placeholder="end date"
-                            onChange={props.handleChange}
+                            onChange={this.handleChange}
                             required
                         />
                     </div>
@@ -53,5 +75,7 @@ const Search = (props) => (
                 </div>
             </div>
         )
+    }
+}
 
 export default Search;
